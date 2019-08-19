@@ -6,9 +6,8 @@ let boss = {
 }
 let player = {
   stursa: {
-    name: 'Stursa', health: 150, laserdmg: 1, missledmg: 4, barragedmg: 8, energy: 200
-  },
-  goldarrow: { name: 'Golden Arrow', health: 100, laserdmg: 2, missledmg: 6, barragedmg: 12, energy: 100 }
+    name: 'Stursa', health: 150, laserdmg: 2, missledmg: 4, barragedmg: 8,
+  }
 }
 
 let actions = {
@@ -18,41 +17,55 @@ let actions = {
 }
 let x = ''
 let modifier = 0
-let cool = boss.turn - 1
+let z = boss.turn
 
 function useaction() {
-  let z = cooldowns()
+
+  update()
+
   switch (x) {
     case 'pierce':
 
-      if (z = boss.turn) {
+      if (z >= boss.turn) {
+        z = z - 3
+        update()
         return actions.piercing.mod
         break;
       }
-      else { return 0 }
+      else {
+
+        return z = z + 2, 0
+      }
     case 'drive':
 
-      if (z = boss.turn) {
+      if (z >= boss.turn) {
+        z = z - 4
         return actions.overdrive.mod
         break;
       }
-      else { return 0 }
-    case 'burst':
-      if (z = boss.turn) {
+      else {
 
-        return actions.burst.mod
-        break;
+        return z = z + 2, 0
       }
-      else { return 0 }
+    case 'burst':
+      if (z >= boss.turn) {
+        z = z - 5
+        return actions.burst.mod
+      }
+      else {
+
+        return z = z + 2, 0
+      }
     default:
       return 0
+
   }
 
 }
 
 
 
-//have action mods apply to the boss using a number randomizer and if statement
+//have boss inflict damage based on a random # + modifier
 function bossaction() {
 
 }
@@ -65,7 +78,7 @@ function healthcheck() {
 }
 function laser() {
   let modifier = useaction()
-  let ttldmg = 1 + modifier
+  let ttldmg = player.stursa.laserdmg + modifier
   boss.health = (boss.health - ttldmg)
   boss.turn = (boss.turn + 1)
 
@@ -77,7 +90,7 @@ function missle() {
 
   let modifier = useaction()
 
-  let ttldmg = 5 + modifier
+  let ttldmg = player.stursa.missledmg + modifier
   boss.health = (boss.health - ttldmg)
   boss.turn = (boss.turn + 1)
   return boss.health,
@@ -87,7 +100,7 @@ function missle() {
 function barrage() {
   let modifier = useaction()
 
-  let ttldmg = 10 + modifier
+  let ttldmg = player.stursa.barragedmg + modifier
   boss.health = (boss.health - ttldmg)
   boss.turn = (boss.turn + 1)
   return boss.health,
@@ -101,24 +114,18 @@ function update() {
   let n = boss.health.toString()
   let y = boss.turn.toString()
 
+  if (z >= boss.turn) {
+    document.getElementById("actions").textContent = "Ship's flux shifter is ready for action"
+  }
+  else {
+    document.getElementById("actions").textContent = "Ship's flux shifter on cooldown"
+  }
+  document.getElementById("currentmod").textContent = x
+
   return document.getElementById('bosshealth').innerText = n,
     document.getElementById('bossname').innerText = boss.name,
     document.getElementById('hits').innerText = y
 }
-function cooldowns() {
 
-  if (cool == boss.turn) {
-    return cool
-  }
-  else if (cool < boss.turn) {
-    alert("Ship's sytems are currently cooling down")
-    cool = cool + 1
 
-    return 0
-  }
-  else {
-    cool = boss.turn
-  }
-  return cool = boss.turn - 3
-}
 update()
