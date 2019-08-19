@@ -1,2 +1,12 @@
-
-
+.background{
+  background-image: url(https://media0.giphy.com/media/ZrlFjwhclknWE/source.gif);
+  background-size: cover;
+  color: white;
+  text-shadow: 0px 2px 4px black,0px -2px 4px black;
+font-family: '8BITWONDERNominal';
+}
+.atkoptions{background-color: black;
+border:navy double 3px}
+.stats{
+  font-size: large;
+}
