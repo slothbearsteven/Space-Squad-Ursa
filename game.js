@@ -64,9 +64,8 @@ function useaction() {
         return z = z + 2, 0
       }
     default:
-      z = boss.turn
-      return 0
 
+      return 0
   }
 
 }
