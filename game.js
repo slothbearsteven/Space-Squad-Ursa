@@ -1,8 +1,8 @@
 let boss = {
-  health: 250,
+  health: 200,
   name: 'Uknar the Life Drainer',
   turn: 0,
-  atkmod: 3
+  atkmod: 1
 }
 let player = {
   stursa: {
@@ -20,7 +20,7 @@ let modifier = 0
 let z = boss.turn
 
 function start() {
-  document.getElementById('startbutton').innerHTML = '<div class="row  text-center"><div class="col-12"><img src="uknar the life drainer.gif" alt="Uknar"></div> </div><div class="row justify-content-left text-left"><div class="col-12"><br></div></div><div class="row justify-content-center text-center"><div class="col-8 justify-content-center"><img src="Stursa.gif" alt="Players ship"><div class="row  text-center atkoptions"><div class="col-3 stats"><Span><span id="bossname">--</span><br> Health: <Span id="bosshealth">--</Span><br>Turn:<span id="hits">--</span></Span></div><div class="col-6"><div class="row text-center"><div class="col-12" id="actions"> Actions</div><div class="col-12 col-md-4"><button type="button" class="btn btn-dark" onclick="return x= \'pierce\',update()">Piercing</button><br></div><div class="col-12 col-md-4"><button type="button" class="btn btn-dark" onclick="return x=\'drive\',update()">Overdrive</button><br></div><div class="col-12 col-md-4"><button type="button" class="btn btn-dark" onclick="return x=\'burst\',update()">Burst</button><br></div></div><br><div class="row"><div class="col-12" id="atkalert"> Attacks</div><div class="col-12 col-md-4"><button type="button" class="btn btn-dark" onclick="laser()">AER Laser</button></div><div class=" col-12 col-md-4"><button type="button" class="btn btn-dark" onclick="missle()">Missle</button></div><div class="col-12 col-md-4"><button type="button" class="btn btn-dark" onclick="barrage()">Barrage</button></div></div></div><div class="col-3"><span>Player 1 <br>Health: <span id="playerhealth"> --</span> <br>Energy: <span id="playerenergy">--</span> <br><span> Flux Mod: <span id="currentmod">--</span></span></span></div></div></div></div>';
+  document.getElementById('startbutton').innerHTML = '<div class="row  text-center"><div class="col-12" id="final"><img src="uknar the life drainer.gif" alt="Uknar"></div> </div><div class="row justify-content-left text-left"><div class="col-12"><br></div></div><div class="row justify-content-center text-center"><div id="finalloss"><div class="col-8 justify-content-center"><img src="Stursa.gif" alt="Players ship"><div class="row  text-center atkoptions"><div class="col-3 stats"><Span><span id="bossname">--</span><br> Health: <Span id="bosshealth">--</Span><br>Turn:<span id="hits">--</span></Span></div><div class="col-6"><div class="row text-center"><div class="col-12" id="actions"> Actions</div><div class="col-12 col-md-4"><button type="button" class="btn btn-dark" onclick="return x= \'pierce\',update()">Piercing</button><br></div><div class="col-12 col-md-4"><button type="button" class="btn btn-dark" onclick="return x=\'drive\',update()">Overdrive</button><br></div><div class="col-12 col-md-4"><button type="button" class="btn btn-dark" onclick="return x=\'burst\',update()">Burst</button><br></div></div><br><div class="row"><div class="col-12" id="atkalert"> Attacks</div><div class="col-12 col-md-4"><button type="button" class="btn btn-dark" onclick="laser()">AER Laser</button></div><div class=" col-12 col-md-4"><button type="button" class="btn btn-dark" onclick="missle()">Missle</button></div><div class="col-12 col-md-4"><button type="button" class="btn btn-dark" onclick="barrage()">Barrage</button></div></div></div><div class="col-3"><span>Player 1 <br>Health: <span id="playerhealth"> --</span> <br>Energy: <span id="playerenergy">--</span> <br><span> Flux Mod: <span id="currentmod">--</span></span></span></div></div></div></div></div>';
 
   update()
 }
@@ -35,7 +35,7 @@ function useaction() {
 
       if (z >= boss.turn) {
         z = z - 3
-        update()
+
         return actions.piercing.mod
         break;
       }
@@ -64,7 +64,7 @@ function useaction() {
         return z = z + 2, 0
       }
     default:
-
+      z = (z + 1)
       return 0
   }
 
@@ -74,15 +74,42 @@ function useaction() {
 
 //have boss inflict damage based on a random # + modifier
 function bossaction() {
+  let dmg = boss.atkmod + (Math.floor(Math.random() * (5 - 0 + 1)))
+
+  player.stursa.health = (player.stursa.health - dmg)
+
+  update()
 
 }
 
 function healthcheck() {
   if (boss.health <= 0) {
     boss.health = 0
+    document.getElementById('final').innerHTML = `
+    <div class="row justify-content-center text-center">
+    <div class='col-12'> <h1 class="loss"> VICTORY! </h1>
+    <br>
+    <button type="button" class="btn btn-secondary" value="Refresh Page" onclick="window.location.reload()"> Play Again?</button>
+    </div></div>
+    `
   }
   if (player.stursa.Energy > 200) {
     player.stursa.Energy = 200
+  }
+  if (player.stursa.health <= 0) {
+    player.stursa.health = 0
+    document.getElementById('finalloss').innerHTML = `
+    <div class="row justify-content-center text-center">
+    <div class='col-12'> <h1 class="loss"> GAME OVER </h1>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <button type="button" class="btn btn-secondary" value="Refresh Page" onclick="window.location.reload()"> Play Again?</button>
+    </div></div>
+    `
   }
   return boss.health, player.stursa.Energy
 }
@@ -93,9 +120,10 @@ function laser() {
   boss.health = (boss.health - ttldmg)
   boss.turn = (boss.turn + 1)
   player.stursa.Energy = (player.stursa.Energy + 5)
+  bossaction()
   return boss.health,
     boss.turn, player.stursa.Energy
-  update()
+
 }
 function missle() {
 
@@ -107,6 +135,8 @@ function missle() {
     boss.health = (boss.health - ttldmg)
     boss.turn = (boss.turn + 1)
     player.stursa.Energy = (player.stursa.Energy - 20)
+
+    bossaction()
     return boss.health,
       boss.turn, player.stursa.Energy
   }
@@ -124,6 +154,8 @@ function barrage() {
     boss.health = (boss.health - ttldmg)
     boss.turn = (boss.turn + 1)
     player.stursa.Energy = (player.stursa.Energy - 30)
+
+    bossaction()
     return boss.health,
       boss.turn, player.stursa.Energy
   }
@@ -138,6 +170,7 @@ function update() {
   let n = boss.health.toString()
   let y = boss.turn.toString()
   let e = player.stursa.Energy.toString()
+  let p1hp = player.stursa.health.toString()
   if (z >= boss.turn) {
     document.getElementById("actions").textContent = "Ship's flux shifter is ready for action"
   }
@@ -148,5 +181,8 @@ function update() {
     document.getElementById('playerenergy').innerText = e,
     document.getElementById('bosshealth').innerText = n,
     document.getElementById('bossname').innerText = boss.name,
-    document.getElementById('hits').innerText = y
+    document.getElementById('hits').innerText = y,
+    document.getElementById('playerhealth').innerText = p1hp
 }
+
+
