@@ -20,7 +20,40 @@ let modifier = 0
 let z = boss.turn
 
 function start() {
-  document.getElementById('startbutton').innerHTML = '<div class="row  text-center"><div class="col-12" id="final"><img src="uknar the life drainer.gif" alt="Uknar"></div> </div><div class="row justify-content-left text-left"><div class="col-12"><br></div></div><div class="row justify-content-center text-center"><div id="finalloss"><div class="col-8 justify-content-center"><img src="Stursa.gif" alt="Players ship"><div class="row  text-center atkoptions"><div class="col-3 stats"><Span><span id="bossname">--</span><br> Health: <Span id="bosshealth">--</Span><br>Turn:<span id="hits">--</span></Span></div><div class="col-6"><div class="row text-center"><div class="col-12" id="actions"> Actions</div><div class="col-12 col-md-4"><button type="button" class="btn btn-dark" onclick="return x= \'pierce\',update()">Piercing</button><br></div><div class="col-12 col-md-4"><button type="button" class="btn btn-dark" onclick="return x=\'drive\',update()">Overdrive</button><br></div><div class="col-12 col-md-4"><button type="button" class="btn btn-dark" onclick="return x=\'burst\',update()">Burst</button><br></div></div><br><div class="row"><div class="col-12" id="atkalert"> Attacks</div><div class="col-12 col-md-4"><button type="button" class="btn btn-dark" onclick="laser()">AER Laser</button></div><div class=" col-12 col-md-4"><button type="button" class="btn btn-dark" onclick="missle()">Missle</button></div><div class="col-12 col-md-4"><button type="button" class="btn btn-dark" onclick="barrage()">Barrage</button></div></div></div><div class="col-3"><span>Player 1 <br>Health: <span id="playerhealth"> --</span> <br>Energy: <span id="playerenergy">--</span> <br><span> Flux Mod: <span id="currentmod">--</span></span></span></div></div></div></div></div>';
+  document.getElementById('startbutton').innerHTML = `
+  <div class="row  text-center justify-content-center">
+  <div class="col-12" ><img id="uknar" src="uknar the life drainer.gif" alt="Uknar"></div>
+   </div>
+   <div class="row justify-content-center"><div class="col-12"><br></div></div>
+   <div class="row justify-content-center text-center">
+   <div class="col-8 justify-content-center"><img id="stursa" src="Stursa.gif" alt="Players ship">
+   <div class="row  text-center justify-content-center atkoptions" id="final">
+   <div class=" col-12 col-md-3 stats">
+   <Span>
+   <span id="bossname">--</span>
+   <br> Health: <Span id="bosshealth">--</Span>
+   <br>Turn:<span id="hits">--</span>
+   </Span>
+   </div>
+   <div class="col-12 col-md-6"><div class="row text-center">
+   <div class="col-12" id="actions"> Actions</div>
+   
+   <div class="col-12 col-md-4"><button type="button" class="btn btn-dark" onclick="return x= \'pierce\',update()">Piercing</button><br></div>
+   
+   <div class="col-12 col-md-4"><button type="button" class="btn btn-dark" onclick="return x=\'drive\',update()">Overdrive</button><br></div>
+
+   <div class="col-12 col-md-4"><button type="button" class="btn btn-dark" onclick="return x=\'burst\',update()">Burst</button><br></div></div><br>
+   <div class="row"><div class="col-12" id="atkalert"> Attacks</div>
+
+   <div class="col-12 col-md-4"><button type="button" class="btn btn-dark" onclick="laser()">AER Laser</button></div>
+   
+   <div class=" col-12 col-md-4"><button type="button" class="btn btn-dark" onclick="missle()">Missle</button></div>
+   
+   <div class="col-12 col-md-4"><button type="button" class="btn btn-dark" onclick="barrage()">Barrage</button></div></div></div>
+   
+   <div class="col-12 col-md-3"><span>Player 1 <br>Health: <span id="playerhealth"> --</span> <br>Energy: <span id="playerenergy">--</span> <br><span> Flux Mod: <span id="currentmod">--</span></span></span>
+   
+   </div></div></div></div>`;
 
   update()
 }
@@ -98,7 +131,7 @@ function healthcheck() {
   }
   if (player.stursa.health <= 0) {
     player.stursa.health = 0
-    document.getElementById('finalloss').innerHTML = `
+    document.getElementById('final').innerHTML = `
     <div class="row justify-content-center text-center">
     <div class='col-12'> <h1 class="loss"> GAME OVER </h1>
     <br>
@@ -110,6 +143,7 @@ function healthcheck() {
     <button type="button" class="btn btn-secondary" value="Refresh Page" onclick="window.location.reload()"> Play Again?</button>
     </div></div>
     `
+
   }
   return boss.health, player.stursa.Energy
 }
